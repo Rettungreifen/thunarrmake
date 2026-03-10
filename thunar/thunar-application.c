@@ -710,10 +710,13 @@ thunar_application_load_css (void)
                                    /* Apple-style: sharp corners everywhere */
                                    "* { border-radius: 0; }"
                                    /* Headerbar: light gray, clean, no gradient */
-                                   "headerbar { background: #f0f0f0; border-bottom: 1px solid #c8c8c8; box-shadow: none; padding: 1px 8px; min-height: 28px; }"
-                                   "headerbar:backdrop { background: #f5f5f5; min-height: 28px; }"
-                                   /* Toolbar inside headerbar */
-                                   "headerbar toolbar { background: none; border: none; box-shadow: none; }"
+                                   "headerbar { background: #f0f0f0; border-bottom: 1px solid #c8c8c8; box-shadow: none; padding: 0px 4px; min-height: 24px; }"
+                                   "headerbar:backdrop { background: #f5f5f5; min-height: 24px; }"
+                                   /* Toolbar: compact height */
+                                   "toolbar { background: none; border: none; box-shadow: none; padding: 0; }"
+                                   "toolbar toolbutton { padding: 0; }"
+                                   "toolbar toolbutton button { padding: 2px; min-width: 20px; min-height: 20px; }"
+                                   "toolbar toolbutton button image { -gtk-icon-size: 14px; }"
                                    /* Sidebar: slightly darker, macOS-like */
                                    ".sidebar { background-color: #e8e8e8; border-top: 1px solid #c8c8c8; border-right: 1px solid #c8c8c8; }"
                                    ".sidebar:backdrop { background-color: #efefef; }"

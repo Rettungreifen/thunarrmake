@@ -7097,12 +7097,8 @@ thunar_window_location_toolbar_create (ThunarWindow *window)
   /* display the toolbar */
   gtk_widget_show_all (window->location_toolbar);
 
-  /* hide navigation buttons */
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_menu));
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_back));
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_forward));
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_parent));
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_home));
+  /* only show the menu button when the menubar is hidden */
+  gtk_widget_set_visible (window->location_toolbar_item_menu, !window->menubar_visible);
 
   /* add the location bar itself after gtk_widget_show_all to not mess with the visibility of the location buttons */
   gtk_container_add (GTK_CONTAINER (tool_item), window->location_bar);
