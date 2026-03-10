@@ -1281,6 +1281,7 @@ thunar_window_init (ThunarWindow *window)
   /* setup the trash infobar */
   window->trash_infobar = gtk_info_bar_new ();
   gtk_grid_attach (GTK_GRID (window->view_box), window->trash_infobar, 0, 2, 1, 1);
+  gtk_widget_hide (window->trash_infobar);
   window->trash_infobar_restore_button = gtk_info_bar_add_button (GTK_INFO_BAR (window->trash_infobar), _("Restore Selected Items"), RESTORE);
   gtk_widget_set_sensitive (window->trash_infobar_restore_button, FALSE);
   window->trash_infobar_empty_button = gtk_info_bar_add_button (GTK_INFO_BAR (window->trash_infobar), _("Empty Trash"), EMPTY);
@@ -5908,8 +5909,8 @@ thunar_window_set_current_directory (ThunarWindow *window,
   is_trashed = thunar_file_is_trashed (current_directory);
   is_recent = thunar_file_is_recent (current_directory);
 
-  /* show/hide trash infobar */
-  gtk_widget_set_visible (window->trash_infobar, is_trashed);
+  /* trash infobar permanently hidden */
+  gtk_widget_hide (window->trash_infobar);
 
   /* show/hide special columns */
   if (THUNAR_IS_DETAILS_VIEW (window->view))
