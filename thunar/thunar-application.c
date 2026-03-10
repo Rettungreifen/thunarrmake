@@ -748,8 +748,23 @@ thunar_application_load_css (void)
   GtkSettings    *settings;
   gboolean        dark_mode = FALSE;
 
+  gchar *theme_name = NULL;
+
   settings = gtk_settings_get_default ();
   g_object_get (settings, "gtk-application-prefer-dark-theme", &dark_mode, NULL);
+
+  /* also check theme name for dark variant */
+  if (!dark_mode)
+    {
+      g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
+      if (theme_name != NULL)
+        {
+          gchar *lower = g_ascii_strdown (theme_name, -1);
+          dark_mode = (strstr (lower, "dark") != NULL);
+          g_free (lower);
+          g_free (theme_name);
+        }
+    }
 
   css_provider = gtk_css_provider_new ();
   gtk_css_provider_load_from_data (css_provider, dark_mode ? DARK_CSS : LIGHT_CSS, -1, NULL);
