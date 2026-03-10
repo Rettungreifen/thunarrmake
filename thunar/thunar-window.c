@@ -7042,15 +7042,10 @@ thunar_window_location_toolbar_create (ThunarWindow *window)
 
   /* add toolbar items */
   window->location_toolbar_item_menu = thunar_window_create_toolbar_toggle_item_from_action (window, THUNAR_WINDOW_ACTION_MENU, FALSE, item_order++);
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_menu));
   window->location_toolbar_item_back = thunar_window_create_toolbar_item_from_action (window, THUNAR_WINDOW_ACTION_BACK, item_order++);
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_back));
   window->location_toolbar_item_forward = thunar_window_create_toolbar_item_from_action (window, THUNAR_WINDOW_ACTION_FORWARD, item_order++);
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_forward));
   window->location_toolbar_item_parent = thunar_window_create_toolbar_item_from_action (window, THUNAR_WINDOW_ACTION_OPEN_PARENT, item_order++);
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_parent));
   window->location_toolbar_item_home = thunar_window_create_toolbar_item_from_action (window, THUNAR_WINDOW_ACTION_OPEN_HOME, item_order++);
-  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_home));
   thunar_window_create_toolbar_item_from_action (window, THUNAR_WINDOW_ACTION_NEW_TAB, item_order++);
   thunar_window_create_toolbar_item_from_action (window, THUNAR_WINDOW_ACTION_NEW_WINDOW, item_order++);
   window->location_toolbar_item_split_view = thunar_window_create_toolbar_toggle_item_from_action (window, THUNAR_WINDOW_ACTION_VIEW_SPLIT, thunar_window_split_view_is_active (window), item_order++);
@@ -7102,8 +7097,12 @@ thunar_window_location_toolbar_create (ThunarWindow *window)
   /* display the toolbar */
   gtk_widget_show_all (window->location_toolbar);
 
-  /* only show the menu button when the menubar is hidden */
-  gtk_widget_set_visible (window->location_toolbar_item_menu, !window->menubar_visible);
+  /* hide navigation buttons */
+  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_menu));
+  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_back));
+  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_forward));
+  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_parent));
+  gtk_widget_hide (GTK_WIDGET (window->location_toolbar_item_home));
 
   /* add the location bar itself after gtk_widget_show_all to not mess with the visibility of the location buttons */
   gtk_container_add (GTK_CONTAINER (tool_item), window->location_bar);
