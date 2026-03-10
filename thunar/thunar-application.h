@@ -212,6 +212,8 @@ thunar_application_malloc_trim_on_idle (ThunarApplication *application);
 void
 thunar_application_posix_signal_init (ThunarApplication *application);
 
+void thunar_application_toggle_dark_mode (void);
+
 G_END_DECLS;
 
 #endif /* !__THUNAR_APPLICATION_H__ */

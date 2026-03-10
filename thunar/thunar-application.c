@@ -764,38 +764,77 @@ static const gchar *DARK_CSS =
   ".view:selected:backdrop { background-color: #4a90c4; color: #ffffff; }"
   "#example { border-radius: 0; border: 1px solid #444444; }";
 
-static void
-thunar_application_load_css (void)
+static GtkCssProvider *thunar_css_provider = NULL;
+static gboolean        thunar_dark_mode = FALSE;
+
+static gboolean
+thunar_application_is_dark_mode (void)
 {
-  GtkCssProvider *css_provider;
-  GdkScreen      *screen;
-  GtkSettings    *settings;
-  gboolean        dark_mode = FALSE;
+  GtkSettings *settings = gtk_settings_get_default ();
+  gboolean     dark = FALSE;
+  gchar       *theme_name = NULL;
 
-  gchar *theme_name = NULL;
-
-  settings = gtk_settings_get_default ();
-  g_object_get (settings, "gtk-application-prefer-dark-theme", &dark_mode, NULL);
-
-  /* also check theme name for dark variant */
-  if (!dark_mode)
+  g_object_get (settings, "gtk-application-prefer-dark-theme", &dark, NULL);
+  if (!dark)
     {
       g_object_get (settings, "gtk-theme-name", &theme_name, NULL);
       if (theme_name != NULL)
         {
           gchar *lower = g_ascii_strdown (theme_name, -1);
-          dark_mode = (strstr (lower, "dark") != NULL);
+          dark = (strstr (lower, "dark") != NULL);
           g_free (lower);
           g_free (theme_name);
         }
     }
+  return dark;
+}
 
-  css_provider = gtk_css_provider_new ();
-  gtk_css_provider_load_from_data (css_provider, dark_mode ? DARK_CSS : LIGHT_CSS, -1, NULL);
+static void
+thunar_application_apply_css (void)
+{
+  if (thunar_css_provider == NULL)
+    return;
+  gtk_css_provider_load_from_data (thunar_css_provider,
+                                   thunar_dark_mode ? DARK_CSS : LIGHT_CSS,
+                                   -1, NULL);
+}
+
+static void
+thunar_application_on_settings_changed (GtkSettings *settings,
+                                        GParamSpec  *pspec,
+                                        gpointer     data)
+{
+  thunar_dark_mode = thunar_application_is_dark_mode ();
+  thunar_application_apply_css ();
+}
+
+void
+thunar_application_toggle_dark_mode (void)
+{
+  thunar_dark_mode = !thunar_dark_mode;
+  thunar_application_apply_css ();
+}
+
+static void
+thunar_application_load_css (void)
+{
+  GdkScreen   *screen;
+  GtkSettings *settings;
+
+  settings = gtk_settings_get_default ();
+  thunar_dark_mode = thunar_application_is_dark_mode ();
+
+  thunar_css_provider = gtk_css_provider_new ();
+  thunar_application_apply_css ();
 
   screen = gdk_screen_get_default ();
-  gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (css_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
-  g_object_unref (css_provider);
+  gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (thunar_css_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
+
+  /* auto-update when system theme changes */
+  g_signal_connect (settings, "notify::gtk-application-prefer-dark-theme",
+                    G_CALLBACK (thunar_application_on_settings_changed), NULL);
+  g_signal_connect (settings, "notify::gtk-theme-name",
+                    G_CALLBACK (thunar_application_on_settings_changed), NULL);
 }
 
 

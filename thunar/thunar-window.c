@@ -5159,6 +5159,15 @@ thunar_window_check_uca_key_activation (ThunarWindow *window,
                                         GdkEventKey  *key_event,
                                         gpointer      user_data)
 {
+  /* Ctrl+D toggles dark mode */
+  if (key_event->keyval == GDK_KEY_d &&
+      (key_event->state & GDK_CONTROL_MASK) &&
+      !(key_event->state & GDK_SHIFT_MASK))
+    {
+      thunar_application_toggle_dark_mode ();
+      return GDK_EVENT_STOP;
+    }
+
   if (thunar_action_manager_check_uca_key_activation (window->action_mgr, key_event))
     return GDK_EVENT_STOP;
   return GDK_EVENT_PROPAGATE;
