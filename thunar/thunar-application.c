@@ -707,21 +707,33 @@ thunar_application_load_css (void)
   css_provider = gtk_css_provider_new ();
 
   gtk_css_provider_load_from_data (css_provider,
-                                   /* for the location-buttons any margin looks ugly */
-                                   ".location-button { margin-right: 0; }"
-                                   /* add missing top border to side pane */
-                                   ".sidebar { border-top-style: solid; }"
-                                   /* remove extra borders */
-                                   ".preview-pane { border-left-width: 0px; border-right-width: 0px; border-bottom-width: 0px; }"
-                                   ".standard-view { border-left-width: 0px; border-right-width: 0px; }"
-                                   /* make border thicker during DnD */
-                                   ".standard-view:drop(active) { border-width: 2px; }"
-                                   /* change background color of inactive split view pane */
-                                   ".split-view-inactive-pane .view { background-color: @theme_unfocused_bg_color; }"
-                                   /* for the toorbar in headerbar looks ugly */
-                                   "headerbar toolbar { background: none; }"
-                                   /* for the example box in properties dialog > highlight tab */
-                                   "#example { border-radius: 10px; }",
+                                   /* Apple-style: sharp corners everywhere */
+                                   "* { border-radius: 0; }"
+                                   /* Headerbar: light gray, clean, no gradient */
+                                   "headerbar { background: #f0f0f0; border-bottom: 1px solid #c8c8c8; box-shadow: none; padding: 4px 8px; }"
+                                   "headerbar:backdrop { background: #f5f5f5; }"
+                                   /* Toolbar inside headerbar */
+                                   "headerbar toolbar { background: none; border: none; box-shadow: none; }"
+                                   /* Sidebar: slightly darker, macOS-like */
+                                   ".sidebar { background-color: #e8e8e8; border-top: 1px solid #c8c8c8; border-right: 1px solid #c8c8c8; }"
+                                   ".sidebar:backdrop { background-color: #efefef; }"
+                                   /* Main file view: clean white */
+                                   ".standard-view { background-color: #ffffff; border: none; }"
+                                   ".standard-view:drop(active) { border: 2px solid #0070c9; }"
+                                   /* Preview pane */
+                                   ".preview-pane { background-color: #f5f5f5; border: none; }"
+                                   /* Location bar buttons: flat, sharp */
+                                   ".location-button { margin-right: 0; border-radius: 0; background: none; border: none; }"
+                                   ".location-button:hover { background-color: #dcdcdc; }"
+                                   /* Inactive split pane */
+                                   ".split-view-inactive-pane .view { background-color: #f5f5f5; }"
+                                   /* Buttons: flat Apple style */
+                                   "button { border-radius: 0; }"
+                                   /* Selected items: macOS blue */
+                                   ".view:selected { background-color: #0070c9; color: #ffffff; }"
+                                   ".view:selected:backdrop { background-color: #8ab8d9; color: #ffffff; }"
+                                   /* Properties dialog example box */
+                                   "#example { border-radius: 0; border: 1px solid #c8c8c8; }",
                                    -1, NULL);
   screen = gdk_screen_get_default ();
   gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (css_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
