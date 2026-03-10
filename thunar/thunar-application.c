@@ -736,7 +736,22 @@ thunar_application_load_css (void)
                                    ".view:selected { background-color: #0070c9; color: #ffffff; }"
                                    ".view:selected:backdrop { background-color: #8ab8d9; color: #ffffff; }"
                                    /* Properties dialog example box */
-                                   "#example { border-radius: 0; border: 1px solid #c8c8c8; }",
+                                   "#example { border-radius: 0; border: 1px solid #c8c8c8; }"
+                                   /* Dark mode */
+                                   "@media (prefers-color-scheme: dark) {"
+                                   "  headerbar { background: #2c2c2c; border-bottom: 1px solid #1a1a1a; color: #ffffff; }"
+                                   "  headerbar:backdrop { background: #333333; }"
+                                   "  toolbar { background: none; }"
+                                   "  .sidebar { background-color: #252525; border-right: 1px solid #1a1a1a; color: #dddddd; }"
+                                   "  .sidebar:backdrop { background-color: #2a2a2a; }"
+                                   "  .standard-view { background-color: #1e1e1e; color: #ffffff; }"
+                                   "  .preview-pane { background-color: #252525; }"
+                                   "  .location-button { color: #dddddd; }"
+                                   "  .location-button:hover { background-color: #3a3a3a; }"
+                                   "  .split-view-inactive-pane .view { background-color: #252525; }"
+                                   "  .view:selected { background-color: #0070c9; color: #ffffff; }"
+                                   "  #example { border: 1px solid #444444; }"
+                                   "}",
                                    -1, NULL);
   screen = gdk_screen_get_default ();
   gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (css_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
