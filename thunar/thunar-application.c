@@ -744,8 +744,22 @@ static const gchar *DARK_CSS =
   ".location-button { margin-right: 0; border-radius: 0; background: none; border: none; color: #dddddd; }"
   ".location-button:hover { background-color: #3a3a3a; }"
   ".split-view-inactive-pane .view { background-color: #252525; }"
-  "button { border-radius: 0; }"
+  "button { border-radius: 0; color: #eeeeee; }"
+  "button:hover { background-color: #3a3a3a; }"
   "label { color: #eeeeee; }"
+  /* Address bar / location entry */
+  "entry { background-color: #2a2a2a; color: #eeeeee; border: 1px solid #444444; }"
+  "entry:focus { border-color: #0070c9; }"
+  /* Bottom action bar (e.g. trash actions) */
+  "actionbar { background-color: #252525; border-top: 1px solid #1a1a1a; color: #eeeeee; }"
+  "actionbar button { background-color: #333333; color: #eeeeee; border: 1px solid #444444; }"
+  "actionbar button:hover { background-color: #3a3a3a; }"
+  /* Statusbar at the bottom */
+  "statusbar { background-color: #252525; color: #aaaaaa; border-top: 1px solid #1a1a1a; }"
+  /* Scrollbars */
+  "scrollbar { background-color: #1e1e1e; }"
+  "scrollbar slider { background-color: #444444; }"
+  "scrollbar slider:hover { background-color: #555555; }"
   ".view:selected { background-color: #0070c9; color: #ffffff; }"
   ".view:selected:backdrop { background-color: #4a90c4; color: #ffffff; }"
   "#example { border-radius: 0; border: 1px solid #444444; }";
