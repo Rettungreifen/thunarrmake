@@ -462,7 +462,7 @@ thunar_preferences_class_init (ThunarPreferencesClass *klass)
   g_param_spec_boolean ("last-menubar-visible",
                         "LastMenubarVisible",
                         NULL,
-                        TRUE,
+                        FALSE,
                         G_PARAM_READWRITE | G_PARAM_STATIC_STRINGS);
 
   /**
