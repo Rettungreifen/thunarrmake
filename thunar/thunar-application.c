@@ -698,61 +698,62 @@ thunar_application_dbus_register (GApplication    *gapp,
 
 
 
+static const gchar *LIGHT_CSS =
+  "* { border-radius: 0; }"
+  "headerbar { background: #f0f0f0; border-bottom: 1px solid #c8c8c8; box-shadow: none; padding: 0px 4px; min-height: 24px; }"
+  "headerbar:backdrop { background: #f5f5f5; min-height: 24px; }"
+  "toolbar { background: none; border: none; box-shadow: none; padding: 0; }"
+  "toolbar toolbutton { padding: 0; }"
+  "toolbar toolbutton button { padding: 2px; min-width: 20px; min-height: 20px; }"
+  "toolbar toolbutton button image { -gtk-icon-size: 14px; }"
+  ".sidebar { background-color: #e8e8e8; border-top: 1px solid #c8c8c8; border-right: 1px solid #c8c8c8; }"
+  ".sidebar:backdrop { background-color: #efefef; }"
+  ".standard-view { background-color: #ffffff; border: none; }"
+  ".standard-view:drop(active) { border: 2px solid #0070c9; }"
+  ".preview-pane { background-color: #f5f5f5; border: none; }"
+  ".location-button { margin-right: 0; border-radius: 0; background: none; border: none; }"
+  ".location-button:hover { background-color: #dcdcdc; }"
+  ".split-view-inactive-pane .view { background-color: #f5f5f5; }"
+  "button { border-radius: 0; }"
+  ".view:selected { background-color: #0070c9; color: #ffffff; }"
+  ".view:selected:backdrop { background-color: #8ab8d9; color: #ffffff; }"
+  "#example { border-radius: 0; border: 1px solid #c8c8c8; }";
+
+static const gchar *DARK_CSS =
+  "* { border-radius: 0; }"
+  "headerbar { background: #2c2c2c; border-bottom: 1px solid #1a1a1a; box-shadow: none; padding: 0px 4px; min-height: 24px; color: #ffffff; }"
+  "headerbar:backdrop { background: #333333; min-height: 24px; }"
+  "toolbar { background: none; border: none; box-shadow: none; padding: 0; }"
+  "toolbar toolbutton { padding: 0; }"
+  "toolbar toolbutton button { padding: 2px; min-width: 20px; min-height: 20px; }"
+  "toolbar toolbutton button image { -gtk-icon-size: 14px; }"
+  ".sidebar { background-color: #252525; border-top: 1px solid #1a1a1a; border-right: 1px solid #1a1a1a; color: #dddddd; }"
+  ".sidebar:backdrop { background-color: #2a2a2a; }"
+  ".standard-view { background-color: #1e1e1e; border: none; }"
+  ".standard-view:drop(active) { border: 2px solid #0070c9; }"
+  ".preview-pane { background-color: #252525; border: none; }"
+  ".location-button { margin-right: 0; border-radius: 0; background: none; border: none; color: #dddddd; }"
+  ".location-button:hover { background-color: #3a3a3a; }"
+  ".split-view-inactive-pane .view { background-color: #252525; }"
+  "button { border-radius: 0; }"
+  ".view:selected { background-color: #0070c9; color: #ffffff; }"
+  ".view:selected:backdrop { background-color: #4a90c4; color: #ffffff; }"
+  "#example { border-radius: 0; border: 1px solid #444444; }";
+
 static void
 thunar_application_load_css (void)
 {
   GtkCssProvider *css_provider;
   GdkScreen      *screen;
+  GtkSettings    *settings;
+  gboolean        dark_mode = FALSE;
+
+  settings = gtk_settings_get_default ();
+  g_object_get (settings, "gtk-application-prefer-dark-theme", &dark_mode, NULL);
 
   css_provider = gtk_css_provider_new ();
+  gtk_css_provider_load_from_data (css_provider, dark_mode ? DARK_CSS : LIGHT_CSS, -1, NULL);
 
-  gtk_css_provider_load_from_data (css_provider,
-                                   /* Apple-style: sharp corners everywhere */
-                                   "* { border-radius: 0; }"
-                                   /* Headerbar: light gray, clean, no gradient */
-                                   "headerbar { background: #f0f0f0; border-bottom: 1px solid #c8c8c8; box-shadow: none; padding: 0px 4px; min-height: 24px; }"
-                                   "headerbar:backdrop { background: #f5f5f5; min-height: 24px; }"
-                                   /* Toolbar: compact height */
-                                   "toolbar { background: none; border: none; box-shadow: none; padding: 0; }"
-                                   "toolbar toolbutton { padding: 0; }"
-                                   "toolbar toolbutton button { padding: 2px; min-width: 20px; min-height: 20px; }"
-                                   "toolbar toolbutton button image { -gtk-icon-size: 14px; }"
-                                   /* Sidebar: slightly darker, macOS-like */
-                                   ".sidebar { background-color: #e8e8e8; border-top: 1px solid #c8c8c8; border-right: 1px solid #c8c8c8; }"
-                                   ".sidebar:backdrop { background-color: #efefef; }"
-                                   /* Main file view: clean white */
-                                   ".standard-view { background-color: #ffffff; border: none; }"
-                                   ".standard-view:drop(active) { border: 2px solid #0070c9; }"
-                                   /* Preview pane */
-                                   ".preview-pane { background-color: #f5f5f5; border: none; }"
-                                   /* Location bar buttons: flat, sharp */
-                                   ".location-button { margin-right: 0; border-radius: 0; background: none; border: none; }"
-                                   ".location-button:hover { background-color: #dcdcdc; }"
-                                   /* Inactive split pane */
-                                   ".split-view-inactive-pane .view { background-color: #f5f5f5; }"
-                                   /* Buttons: flat Apple style */
-                                   "button { border-radius: 0; }"
-                                   /* Selected items: macOS blue */
-                                   ".view:selected { background-color: #0070c9; color: #ffffff; }"
-                                   ".view:selected:backdrop { background-color: #8ab8d9; color: #ffffff; }"
-                                   /* Properties dialog example box */
-                                   "#example { border-radius: 0; border: 1px solid #c8c8c8; }"
-                                   /* Dark mode */
-                                   "@media (prefers-color-scheme: dark) {"
-                                   "  headerbar { background: #2c2c2c; border-bottom: 1px solid #1a1a1a; color: #ffffff; }"
-                                   "  headerbar:backdrop { background: #333333; }"
-                                   "  toolbar { background: none; }"
-                                   "  .sidebar { background-color: #252525; border-right: 1px solid #1a1a1a; color: #dddddd; }"
-                                   "  .sidebar:backdrop { background-color: #2a2a2a; }"
-                                   "  .standard-view { background-color: #1e1e1e; color: #ffffff; }"
-                                   "  .preview-pane { background-color: #252525; }"
-                                   "  .location-button { color: #dddddd; }"
-                                   "  .location-button:hover { background-color: #3a3a3a; }"
-                                   "  .split-view-inactive-pane .view { background-color: #252525; }"
-                                   "  .view:selected { background-color: #0070c9; color: #ffffff; }"
-                                   "  #example { border: 1px solid #444444; }"
-                                   "}",
-                                   -1, NULL);
   screen = gdk_screen_get_default ();
   gtk_style_context_add_provider_for_screen (screen, GTK_STYLE_PROVIDER (css_provider), GTK_STYLE_PROVIDER_PRIORITY_APPLICATION);
   g_object_unref (css_provider);
